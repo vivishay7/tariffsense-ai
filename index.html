@@ -1352,7 +1352,14 @@ import { getFirestore, doc, getDoc, setDoc, getDocs, collection } from 'https://
 
 // ── Config ────────────────────────────────────────────
 const ADMIN_EMAIL = atob("YWcyOTU2QHNjYXJsZXRtYWlsLnJ1dGdlcnMuZWR1");
-const DEFAULT_FB = { apiKey:"REPLACE_WITH_FIREBASE_KEY", authDomain:"tariffsense.firebaseapp.com", projectId:"tariffsense-ai", storageBucket:"tariffsense-ai.appspot.com", messagingSenderId:"000000", appId:"1:000:web:000" };
+const firebaseConfig = {
+  apiKey: "AIzaSyAnYePOTlrEO1DeDcVRgqLjihBl_rIc6cc",
+  authDomain: "tariffsense-ai.firebaseapp.com",
+  projectId: "tariffsense-ai",
+  storageBucket: "tariffsense-ai.firebasestorage.app",
+  messagingSenderId: "701586534079",
+  appId: "1:701586534079:web:38f24cd3af92dfd68f200a"
+};
 
 let app, auth, db, currentUser, userProfile = {}, portfolio = [];
 
