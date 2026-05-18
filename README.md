@@ -2,7 +2,7 @@
 
 A trade compliance platform that consolidates HTS classification, landed-cost analysis, FTA eligibility review, and sourcing scenario modeling into a single web application. Built in response to the 2025–2026 U.S. tariff environment, where importers are navigating Section 301, Section 122, and Section 232 simultaneously.
 
-**Live demo:** [your-netlify-url.netlify.app]
+**Live demo:** [https://tariffsense-ai.netlify.app/]
 
 ---
 
