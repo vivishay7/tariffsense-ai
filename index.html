@@ -1352,14 +1352,7 @@ import { getFirestore, doc, getDoc, setDoc, getDocs, collection } from 'https://
 
 // ── Config ────────────────────────────────────────────
 const ADMIN_EMAIL = atob("YWcyOTU2QHNjYXJsZXRtYWlsLnJ1dGdlcnMuZWR1");
-const firebaseConfig = {
-  apiKey: "AIzaSyAnYePOTlrEO1DeDcVRgqLjihBl_rIc6cc",
-  authDomain: "tariffsense-ai.firebaseapp.com",
-  projectId: "tariffsense-ai",
-  storageBucket: "tariffsense-ai.firebasestorage.app",
-  messagingSenderId: "701586534079",
-  appId: "1:701586534079:web:38f24cd3af92dfd68f200a"
-};
+const DEFAULT_FB = { apiKey:"REPLACE_WITH_FIREBASE_KEY", authDomain:"tariffsense.firebaseapp.com", projectId:"tariffsense-ai", storageBucket:"tariffsense-ai.appspot.com", messagingSenderId:"000000", appId:"1:000:web:000" };
 
 let app, auth, db, currentUser, userProfile = {}, portfolio = [];
 
@@ -1372,17 +1365,45 @@ try {
 
 // ── Auth ─────────────────────────────────────────────
 window.signInWithGoogle = async function() {
-  if (!auth) { toast('Configure Firebase in Settings', 'error'); return; }
-  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
-  catch(e) { toast('Sign-in failed: ' + e.message, 'error'); }
+  if (!auth) { 
+    // Guest mode — allow app to start without Firebase
+    enterGuestMode();
+    return; 
+  }
+  try { 
+    const result = await signInWithPopup(auth, new GoogleAuthProvider());
+  }
+  catch(e) { 
+    console.error('Google Auth error:', e.message);
+    // Fallback to guest mode if sign-in fails
+    if (e.code !== 'auth/popup-blocked') {
+      toast('Sign-in unavailable, using local mode', 'info');
+      enterGuestMode();
+    } else {
+      toast('Popup blocked — allow popups for Google sign-in', 'error');
+    }
+  }
 };
 
 window.signOut = async function() {
   if (auth) await fbSignOut(auth);
   document.getElementById('landing').style.display = 'flex';
   document.getElementById('app').classList.remove('visible');
+  currentUser = null;
   portfolio = []; userProfile = {};
 };
+
+function enterGuestMode() {
+  currentUser = null;
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  document.getElementById('topbar-name').textContent = 'Guest';
+  document.getElementById('sb-avatar').textContent = 'G';
+  loadPortfolio();
+  updateDashboard();
+  initTariffFeed();
+  toast('Using local storage (guest mode)', 'info');
+}
 
 if (auth) {
   onAuthStateChanged(auth, async user => {
@@ -1404,6 +1425,9 @@ if (auth) {
       initTariffFeed();
     }
   });
+} else {
+  // Firebase didn't load — allow guest mode
+  console.warn('Firebase auth not available');
 }
 
 // ── User Profile + Onboarding ─────────────────────────
