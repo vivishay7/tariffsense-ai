@@ -1,0 +1,33 @@
+# Environment variables — never commit API keys
+.env
+.env.local
+.env.*.local
+
+# Netlify
+.netlify/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor directories
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Node (if you ever run local dev with netlify dev)
+node_modules/
+npm-debug.log*
+
+# Build output
+dist/
+build/
